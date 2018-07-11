@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="splash-container is-center">
+    <div class="splash">
+        <h1 class="splash-head">{{ip}}</h1>
+        <p class="splash-subhead is-center">
+            This is your public IP
+        </p>
+        <p>
+            <a href="/api" class="pure-button pure-button-primary">API :)</a>
+        </p>
+    </div>
+</div>
+
+{% endblock %}
