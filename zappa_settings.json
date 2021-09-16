@@ -2,18 +2,15 @@
     "production": {
         "aws_region": "us-east-1",
         "domain": "showmethisip.com",
-        "app_function": "app.app"
-        "profile_name": "aws",
+        "app_function": "app.app",
         "project_name": "show-me-this-ip",
-        "runtime": "python3.7",
-        "s3_bucket": "show-me-this-ip-prod-artifacts"
+        "runtime": "python3.7"
     },
     "development": {
         "aws_region": "us-east-1",
-        "app_function": "app.app"
-        "profile_name": "aws",
+        "app_function": "app.app",
         "project_name": "show-me-this-ip",
-        "runtime": "python3.7",
-        "s3_bucket": "show-me-this-ip-dev-artifacts"
+        "domain_name": "dev.showmethisip.com",
+        "runtime": "python3.7"
     }
 }

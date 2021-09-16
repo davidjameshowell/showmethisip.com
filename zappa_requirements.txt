@@ -1,0 +1,4 @@
+# Needed for Zappa
+requests
+zappa
+poetry

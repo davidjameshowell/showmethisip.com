@@ -1,0 +1,6 @@
+zappa_deploy
+zappa_settings.json
+Dockerfile
+README.md
+.git
+zappa_requirements.txt

@@ -27,6 +27,7 @@ def get_my_ip_api():
 
     return_data['ip'] = real_ip
     return_data['hostname'] = ip_hostname
+    
     try:
         if request.environ['HTTP_DNT']:
              return_data['do_not_track'] = 'true'
