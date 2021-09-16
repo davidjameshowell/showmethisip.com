@@ -8,6 +8,12 @@ GITHUB_ENABLE_CACHE="${ENABLE_CACHE:-false}"
 DOCKER_CACHE_FROM_PARAMETER=""
 DOCKER_CACHE_TO_PARAMETER=""
 
+if ECR_REPO=$(aws --region="${REGION}" --output json ecr describe-repositories --repository-name ${REPOSITORY_NAME} 2>&1); then
+    echo "Repo exists, moving on..."
+else
+    bash ./scripts/bootstrap.sh
+fi
+
 FIND_ECR_REPOSITORY="$(aws --region=us-east-1 ecr describe-repositories --repository-name ${REPOSITORY_NAME})"
 REPOSITORY_ID="$(echo ${FIND_ECR_REPOSITORY} | jq --raw-output '.repositories[].registryId')"
 

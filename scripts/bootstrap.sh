@@ -1,15 +1,14 @@
 #!/bin/bash
 
 REPOSITORY_NAME="showmethisip"
+REGION="${AWS_REGION:-us-east-1}"
 
-FIND_ECR_REPOSITORY="$(aws --region=us-east-1 ecr describe-repositories --repository-name ${REPOSITORY_NAME})"
-
-if [[ $FIND_ECR_REPOSITORY == *"RepositoryNotFoundException"* ]]; then
-    CREATE_ECR_RESPONSE="$(aws --region=us-east-1 ecr create-repository --repository-name ${REPOSITORY_NAME} --image-scanning-configuration scanOnPush=true)"
-    REPOSITORY_ID="$(echo ${CREATE_ECR_RESPONSE} | jq --raw-output '.repository.registryId')"
-    echo "Not exist"
+if ECR_REPO=$(aws --region="${REGION}" --output json ecr describe-repositories --repository-name ${REPOSITORY_NAME} 2>&1); then
+    REPOSITORY_ID="$(echo ${ECR_REPO} | jq --raw-output '.repositories[].registryId')"
+    stdout=$result
 else
-    REPOSITORY_ID="$(echo ${FIND_ECR_REPOSITORY} | jq --raw-output '.repositories[].registryId')"
+    rc=$?
+    stderr=$ECR_REPO
+    CREATE_ECR_RESPONSE="$(aws --region="${REGION}" ecr create-repository --repository-name ${REPOSITORY_NAME} --image-scanning-configuration scanOnPush=true)"
+    REPOSITORY_ID="$(echo ${CREATE_ECR_RESPONSE} | jq --raw-output '.repository.registryId')"
 fi
-
-aws --region=us-east-1 ecr get-login-password | docker login --username AWS --password-stdin "${REPOSITORY_ID}".dkr.ecr.us-east-1.amazonaws.com
