@@ -5,11 +5,8 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def get_my_ip():
-    if request.environ['REMOTE_ADDR'].startswith('172.'):
-        real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
-    else:
-        real_ip = request.environ['REMOTE_ADDR']
-    
+    real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
+
     try:
         ip_hostname = socket.gethostbyaddr(real_ip)[0]
     except:
@@ -21,11 +18,8 @@ def get_my_ip():
 @app.route("/api", methods=["GET"])
 def get_my_ip_api():
     return_data = {}
-    if request.environ['REMOTE_ADDR'].startswith('172.'):
-        real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
-    else:
-        real_ip = request.environ['REMOTE_ADDR']
-    
+    real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
+
     try:
         ip_hostname = socket.gethostbyaddr(real_ip)[0]
     except:
@@ -33,14 +27,19 @@ def get_my_ip_api():
 
     return_data['ip'] = real_ip
     return_data['hostname'] = ip_hostname
-    if request.environ['HTTP_DNT']:
-         return_data['do_not_track'] = 'true'
-    else:
-         return_data['do_not_track'] = 'false'
-    return_data['user_agent'] = request.environ['HTTP_USER_AGENT']
-        
-    return jsonify(return_data),200
+    try:
+        if request.environ['HTTP_DNT']:
+             return_data['do_not_track'] = 'true'
+        else:
+             return_data['do_not_track'] = 'false'
+    except:
+        return_data['do_not_track'] = 'unknown'
+    try:
+        return_data['user_agent'] = request.environ['HTTP_USER_AGENT']
+    except:
+        return_data['user_agent'] = "unknown"
 
+    return jsonify(return_data),200
 
 if __name__ == '__main__':
     app.run()
