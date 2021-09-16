@@ -6,8 +6,6 @@ authors = ["David Howell"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-Flask = "^2.0.1"
-zappa = "^0.53.0"
 environs = "^9.3.3"
 
 [tool.poetry.dev-dependencies]
