@@ -16,7 +16,7 @@ FIND_ECR_REPOSITORY=$(aws --region=us-east-1 ecr describe-repositories --reposit
 REPOSITORY_ID=$(echo ${FIND_ECR_REPOSITORY} | jq --raw-output '.repositories[].registryId')
 
 if ZAPPA_STATUS=$(zappa status ${STAGE} 2>&1); then
-    "${PYENV_EXEC}"" zappa update "${STAGE}" -d "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com/"${REPOSITORY_NAME}":"${STAGE}"-${TAG}
+    "${PYENV_EXEC}" zappa update "${STAGE}" -d "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com/"${REPOSITORY_NAME}":"${STAGE}"-${TAG}
 else
     bash ./scripts/bootstrap.sh
     "${PYENV_EXEC}" zappa deploy "${STAGE}" -d "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com/"${REPOSITORY_NAME}":"${STAGE}"-${TAG}
