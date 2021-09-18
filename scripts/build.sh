@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash                                                                                                                                                                                         ppzlwKhaGCjdhWwjV
 
 STAGE="${STAGE-development}"
 TAG="${TAG-v0.0.1}"
@@ -12,11 +12,10 @@ CI_JOB="${CI_JOB:-true}"
 PYENV_EXEC="pyenv exec"
 
 if [[ $CI_JOB == *"true"* ]]; then
-    eval "$(pyenv virtualenv-init -)"
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
-    eval "$(pyenv virtualenv-init -)"
+    export PATH="/opt/hostedtoolcache/pyenv_root/2.0.0/x64/shims:${PATH}"                                                                                                                           2CjCfAcYUgNxLICPh
+    eval "$(pyenv init --path)"
+    pip install wheel
+    POETRY_VIRTUALENVS_CREATE=false && poetry install --no-root
 fi
 
 if ECR_REPO=$(aws --region="${REGION}" --output json ecr describe-repositories --repository-name ${REPOSITORY_NAME} 2>&1); then
@@ -29,8 +28,8 @@ FIND_ECR_REPOSITORY="$(aws --region=us-east-1 ecr describe-repositories --reposi
 REPOSITORY_ID="$(echo ${FIND_ECR_REPOSITORY} | jq --raw-output '.repositories[].registryId')"
 
 rm zappa_settings.py
-zappa save-python-settings-file "${STAGE}" -o zappa_settings.py
-aws --region="${REGION}" ecr get-login-password | docker login --username AWS --password-stdin "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com
+pyenv exec zappa save-python-settings-file "${STAGE}" -o zappa_settings.py
+aws --region="${REGION}" ecr get-login-password | docker login --username AWS --password-stdin "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com                                                 %2B35aPB3cqUmElnx
 
 if [[ $GITHUB_ENABLE_CACHE == *"true"* ]]; then
     DOCKER_CACHE_FROM_PARAMETER=" --cache-from /tmp/.buildx-cache"
