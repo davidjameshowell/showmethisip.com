@@ -28,7 +28,7 @@ FIND_ECR_REPOSITORY="$(aws --region=us-east-1 ecr describe-repositories --reposi
 REPOSITORY_ID="$(echo ${FIND_ECR_REPOSITORY} | jq --raw-output '.repositories[].registryId')"
 
 rm zappa_settings.py
-pyenv exec zappa save-python-settings-file "${STAGE}" -o zappa_settings.py
+zappa save-python-settings-file "${STAGE}" -o zappa_settings.py
 aws --region="${REGION}" ecr get-login-password | docker login --username AWS --password-stdin "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com                                                 %2B35aPB3cqUmElnx
 
 if [[ $GITHUB_ENABLE_CACHE == *"true"* ]]; then
