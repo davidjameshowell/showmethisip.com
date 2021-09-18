@@ -6,9 +6,10 @@ authors = ["David Howell <david@davidjameshowell.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
-"git+git" = "//github.com/zappa/Zappa.git@master#zappa"
 poetry = "^1.1.8"
-requests = "^2.26.0"
+zappa = {git = "https://github.com/phil-airship/Zappa.git", rev = "cc6ad1beefb0fa96625a6cbb01146d0b3a5a414e"}
+Flask = "^2.0.1"
+environs = "^9.3.3"
 
 [tool.poetry.dev-dependencies]
 
