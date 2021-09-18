@@ -1,4 +1,4 @@
-# Needed for Zappa
-requests
-git+git://github.com/zappa/Zappa.git@master#zappa
-poetry
+git+https://github.com/phil-airship/Zappa.git@cc6ad1beefb0fa96625a6cbb01146d0b3a5a414e#egg=zappa==0.54.0
+flask==2.0.1
+environs==9.3.3
+poetry==1.1.8
