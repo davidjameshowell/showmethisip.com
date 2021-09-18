@@ -26,7 +26,10 @@ jobs:
         command: pip install -U pip
 
     - name: Install Zappa dependencies
-      run: pip install -r zappa_requirements.txt
+      run: pip install poetry
+
+    - name: Install dependencies from Poetry
+      run: poetry install
 
     - name: Set up QEMU for multi arch builds
       uses: docker/setup-qemu-action@master
@@ -55,9 +58,10 @@ jobs:
         STAGE: development
         TAG: ${{ github.sha }}
 
-    - name: Patch Zappa core due to PR #999
-      run: |
-        sed -i 's;self.cf_template.add_description("Automatically generated with Zappa");self.cf_template.set_description("Automatically generated with Zappa");g' '/opt/hostedtoolcache/pyenv_root/2.0.0/x64/versions/3.7.3/lib/python3.7/site-packages/zappa/core.py'
+    # Forked package includes fix
+    #- name: Patch Zappa core due to PR #999
+    #  run: |
+    #    sed -i 's;self.cf_template.add_description("Automatically generated with Zappa");self.cf_template.set_description("Automatically generated with Zappa");g' '/opt/hostedtoolcache/pyenv_root/2.0.0/x64/versions/3.7.3/lib/python3.7/site-packages/zappa/core.py'
 
     - name: Update Zappa stage
       run: |
