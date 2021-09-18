@@ -1,3 +1,4 @@
 flask
 zappa
+git+git://github.com/zappa/Zappa.git@master#zappa
 environs
