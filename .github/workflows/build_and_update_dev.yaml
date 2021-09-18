@@ -30,6 +30,8 @@ jobs:
 
     - name: Install dependencies from Poetry
       run: poetry install
+      env: 
+        - POETRY_VIRTUALENVS_CREATE: false
 
     - name: Set up QEMU for multi arch builds
       uses: docker/setup-qemu-action@master
