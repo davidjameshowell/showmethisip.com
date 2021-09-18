@@ -1,4 +1,4 @@
-#!/bin/bash                                                                                                                                                                                         ppzlwKhaGCjdhWwjV
+#!/bin/bash
 
 STAGE="${STAGE-development}"
 TAG="${TAG-v0.0.1}"
@@ -9,10 +9,10 @@ DOCKER_CACHE_FROM_PARAMETER=""
 DOCKER_CACHE_TO_PARAMETER=""
 
 CI_JOB="${CI_JOB:-true}"
-PYENV_EXEC="pyenv exec"
+
 
 if [[ $CI_JOB == *"true"* ]]; then
-    export PATH="/opt/hostedtoolcache/pyenv_root/2.0.0/x64/shims:${PATH}"                                                                                                                           2CjCfAcYUgNxLICPh
+    export PATH="/opt/hostedtoolcache/pyenv_root/2.0.0/x64/shims:${PATH}"                                                                                                                           
     eval "$(pyenv init --path)"
     pip install wheel
     POETRY_VIRTUALENVS_CREATE=false && poetry install --no-root
@@ -29,7 +29,8 @@ REPOSITORY_ID="$(echo ${FIND_ECR_REPOSITORY} | jq --raw-output '.repositories[].
 
 rm zappa_settings.py
 zappa save-python-settings-file "${STAGE}" -o zappa_settings.py
-aws --region="${REGION}" ecr get-login-password | docker login --username AWS --password-stdin "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com                                                 %2B35aPB3cqUmElnx
+
+aws --region="${REGION}" ecr get-login-password | docker login --username AWS --password-stdin "${REPOSITORY_ID}".dkr.ecr."${REGION}".amazonaws.com
 
 if [[ $GITHUB_ENABLE_CACHE == *"true"* ]]; then
     DOCKER_CACHE_FROM_PARAMETER=" --cache-from /tmp/.buildx-cache"
