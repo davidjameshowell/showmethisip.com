@@ -8,6 +8,17 @@ GITHUB_ENABLE_CACHE="${ENABLE_CACHE:-false}"
 DOCKER_CACHE_FROM_PARAMETER=""
 DOCKER_CACHE_TO_PARAMETER=""
 
+CI_JOB="${CI_JOB:-true}"
+PYENV_EXEC="pyenv exec"
+
+if [[ $CI_JOB == *"true"* ]]; then
+    eval "$(pyenv virtualenv-init -)"
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+fi
+
 if ECR_REPO=$(aws --region="${REGION}" --output json ecr describe-repositories --repository-name ${REPOSITORY_NAME} 2>&1); then
     echo "Repo exists, moving on..."
 else

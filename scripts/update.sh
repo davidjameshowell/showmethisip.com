@@ -8,8 +8,12 @@ CI_JOB="${CI_JOB:-true}"
 PYENV_EXEC="pyenv exec"
 
 if [[ $CI_JOB == *"true"* ]]; then
+    eval "$(pyenv virtualenv-init -)"
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
     POETRY_VIRTUALENVS_CREATE=false && poetry install --no-root
-
 fi
 
 FIND_ECR_REPOSITORY=$(aws --region=us-east-1 ecr describe-repositories --repository-name ${REPOSITORY_NAME})
