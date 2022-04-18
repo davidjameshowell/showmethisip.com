@@ -5,7 +5,11 @@ app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def get_my_ip():
-    real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
+
+    if request.environ.get('HTTP_CF_CONNECTING_IPV6'):
+        real_ip = request.environ.get('HTTP_CF_CONNECTING_IPV6')
+    else:
+        real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
 
     try:
         ip_hostname = socket.gethostbyaddr(real_ip)[0]
@@ -18,7 +22,11 @@ def get_my_ip():
 @app.route("/api", methods=["GET"])
 def get_my_ip_api():
     return_data = {}
-    real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
+    
+    if request.environ.get('HTTP_CF_CONNECTING_IPV6'):
+        real_ip = request.environ.get('HTTP_CF_CONNECTING_IPV6')
+    else:
+        real_ip = request.environ['HTTP_X_FORWARDED_FOR'].split(',')[0]
 
     try:
         ip_hostname = socket.gethostbyaddr(real_ip)[0]
